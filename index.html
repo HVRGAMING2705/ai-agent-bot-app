@@ -1,0 +1,244 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Agent Bot — Vikranth Reddy</title>
+<style>
+:root{--amber:#f59e0b;--amber2:#ff9a3d;--black:#0b0b0b;--cream:#f7f3ea;--line:rgba(0,0,0,.12);--line2:rgba(255,255,255,.14)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--black);color:#f4f1ea;font-family:system-ui,Arial,sans-serif}
+a{color:var(--amber)}
+#progress{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--amber),#2dd4bf);z-index:99}
+nav{position:sticky;top:0;z-index:50;background:var(--cream);color:#111;border-bottom:1px solid var(--line)}
+nav .navinner{max-width:1200px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 24px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:.12em}.logo b{background:var(--amber);color:#111;padding:8px 10px;border-radius:8px}.logo em{font-style:normal;color:var(--amber)}
+.navlinks{display:flex;gap:20px;font-size:11px;letter-spacing:.14em}.navlinks a{color:#444;text-decoration:none;font-weight:700}
+.roles{display:flex;background:#eee;border-radius:999px;padding:3px}.roles span{padding:6px 12px;border-radius:999px;font-size:11px;cursor:pointer}.roles .on{background:var(--amber);font-weight:800}
+.login{border:1px solid #111;background:transparent;border-radius:999px;padding:8px 16px;cursor:pointer;font-weight:700}
+.wrap{max-width:1200px;margin:auto;padding:0 24px}
+section[id]{scroll-margin-top:96px}
+.hero{padding:64px 0 40px;background:radial-gradient(800px 400px at 50% 100%,rgba(245,158,11,.25),transparent 60%),radial-gradient(500px 300px at 90% 0%,rgba(45,212,191,.12),transparent 60%),var(--black)}
+.eyebrow{color:var(--amber);letter-spacing:.18em;font-size:12px;font-weight:700;display:flex;gap:10px;align-items:center}.dot{width:9px;height:9px;border-radius:50%;background:var(--amber);box-shadow:0 0 14px var(--amber);animation:pulse 1.4s infinite}@keyframes pulse{50%{opacity:.4}}
+h1{font-size:clamp(64px,10vw,120px);line-height:.9;margin:18px 0;text-transform:uppercase;letter-spacing:-.02em;font-weight:900}
+h1 .outline{color:transparent;-webkit-text-stroke:2.5px #f4f1ea}
+.sub{color:#b8b8b8;font-size:18px;max-width:640px;line-height:1.6}.sub b{color:#fff}
+.live{color:var(--amber);font-size:12px;letter-spacing:.15em;margin-top:18px;margin-bottom:24px;font-weight:700}
+.glass{background:rgba(255,255,255,.07);border:1px solid var(--line2);border-radius:24px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.glass h3{font-size:12px;letter-spacing:.18em;color:var(--amber);margin-top:0}
+.pillrow{display:flex;flex-wrap:wrap;gap:10px}.pill{border:1px solid var(--line2);background:rgba(255,255,255,.06);color:#fff;border-radius:999px;padding:10px 16px;cursor:pointer;font-weight:700}.pill.on{background:var(--amber);color:#111;border-color:var(--amber)}
+select,textarea{width:100%;background:rgba(255,255,255,.08);border:1px solid var(--line2);color:#fff;border-radius:12px;padding:12px;font-size:15px}
+label{font-size:11px;letter-spacing:.15em;color:#aaa}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+.buildgrid{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;margin-top:16px}
+.bigbtn{width:100%;margin-top:20px;background:linear-gradient(135deg,var(--amber),var(--amber2));color:#111;border:0;border-radius:14px;padding:20px;font-size:18px;font-weight:900;letter-spacing:.05em;cursor:pointer}
+.trust{text-align:center;color:#aaa;font-size:11px;letter-spacing:.18em;margin-top:14px}
+.stats{background:var(--black);border-top:1px solid var(--line2);border-bottom:1px solid var(--line2);display:flex;flex-wrap:wrap}.stats div{flex:1;min-width:150px;padding:24px;border-right:1px solid var(--line2)}.stats b{font-size:38px;color:var(--amber);display:block}.stats span{font-size:11px;letter-spacing:.15em;color:#aaa}
+.ticker{background:var(--amber);color:#111;overflow:hidden;white-space:nowrap;padding:10px 0;font-weight:900;letter-spacing:.1em}.ticker:hover span{animation-play-state:paused}.ticker span{display:inline-block;animation:tick 22s linear infinite}@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.cream{background:var(--cream);color:#111;padding:64px 0;position:relative;overflow:hidden}
+.ghost{position:absolute;top:20px;right:24px;font-size:110px;font-weight:900;color:transparent;-webkit-text-stroke:1px rgba(0,0,0,.08);text-transform:uppercase;pointer-events:none;max-width:60%;overflow:hidden}
+.eyebrow2{letter-spacing:.18em;font-size:12px;color:var(--amber);font-weight:800}
+h2{font-size:clamp(36px,5vw,60px);line-height:1;margin:10px 0;text-transform:uppercase;font-weight:900}
+.cards3{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-top:28px}
+.card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:20px;box-shadow:0 10px 30px rgba(0,0,0,.06);transition:transform .2s}.card:hover{transform:translateY(-4px)}
+.avatar{width:64px;height:64px;border-radius:14px;background:linear-gradient(135deg,#ddd,#bbb);display:flex;align-items:center;justify-content:center;font-size:28px;position:relative}.check{position:absolute;right:-6px;bottom:-6px;background:#2563eb;color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:13px}
+.tag{font-size:11px;border:1px solid var(--line);border-radius:999px;padding:4px 10px}.tag.mint{background:#d1fae5;border-color:#a7f3d0}
+.price{font-size:16px;font-weight:900;border-top:1px dashed #ccc;padding-top:14px;margin-top:14px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.btn-amber{background:var(--amber);border:0;border-radius:999px;padding:10px 18px;font-weight:800;cursor:pointer}.btn-outline{background:transparent;border:1px solid #111;border-radius:999px;padding:10px 18px;font-weight:700;cursor:pointer}
+.dashed{border:2px dashed #ccc;border-radius:20px;padding:28px;text-align:center;color:#666}
+.blacksec{background:var(--black);color:#f4f1ea;padding:64px 0}
+.bento{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:28px}
+.bento .card{background:#1a1a1a;border-color:var(--line2);color:#f4f1ea}.bento .card p{color:#aaa}
+.faq{border:1px solid var(--line);background:#fff;border-radius:16px;padding:18px;margin-bottom:12px;cursor:pointer;display:flex;justify-content:space-between;gap:16px}.faq .plus{color:var(--amber);font-weight:900;font-size:22px}.faq p{display:none;color:#555}.faq.open p{display:block}
+.banner{background:#111;border:1px solid var(--line2);border-radius:24px;padding:36px;box-shadow:0 0 0 1px rgba(245,158,11,.15),0 20px 60px rgba(245,158,11,.12)}
+footer{background:var(--black);color:#aaa;padding:48px 0 0;overflow:hidden}
+.footgrid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:24px}.footgrid a{color:#aaa;text-decoration:none;display:block;margin:8px 0}
+.watermark{font-size:64px;font-weight:900;color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.12);text-transform:uppercase;text-align:center;line-height:1.1;margin-top:24px;padding-bottom:16px}
+#topbtn{position:fixed;right:20px;bottom:20px;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--amber),#2dd4bf);border:0;font-size:20px;cursor:pointer;display:none;z-index:99}
+#chat{background:#020617;border:1px solid var(--line2);border-radius:16px;padding:16px;height:240px;overflow:auto;white-space:pre-wrap;margin-top:16px}
+textarea#msg{height:140px}
+body.light{background:var(--cream);color:#111}body.light .hero{background:var(--cream)}body.light .hero h1{color:#111}body.light h1 .outline{color:transparent;-webkit-text-stroke:2.5px #111}body.light .sub{color:#555}body.light .sub b{color:#111}body.light .glass{background:#fff;border-color:var(--line)}body.light .glass .pill{color:#111;border-color:var(--line);background:#f7f3ea}body.light .glass .pill.on{background:var(--amber);color:#111}body.light select,body.light textarea{color:#111;background:#f7f3ea;border-color:var(--line)}body.light #chat{background:#fff;color:#111}
+@media(max-width:760px){.navlinks{display:none}.grid2{grid-template-columns:1fr}.buildgrid{grid-template-columns:1fr!important}.footgrid{grid-template-columns:1fr}.ghost{font-size:90px}}
+</style></head><body>
+<div id="progress"></div>
+<nav><div class="navinner"><div class="logo"><b>⚡</b><span>AI&nbsp;<em>AGENT</em>&nbsp;BOT</span></div><div class="navlinks"><a href="#build">BUILD A REPO</a><a href="#repos">REPOS</a><a href="#builds">MY BUILDS</a><a href="#why">WHY</a><a href="#faq">FAQ</a></div><div style="display:flex;gap:10px;align-items:center"><div class="roles" id="roles"><span onclick="setRole(this)">Guest</span><span class="on" onclick="setRole(this)">Bot</span><span onclick="setRole(this)">Admin</span></div><button class="login" onclick="loginNote()">Login</button><span id="themeBtn" style="cursor:pointer" onclick="toggleTheme()">🌙</span></div></div><div id="loginNote" style="display:none;text-align:center;font-size:13px;color:#555;padding:0 24px 10px">No sign-up needed — you are browsing as Guest. Login is not required for this demo.</div></nav>
+
+<section class="hero"><div class="wrap">
+<div class="eyebrow"><span class="dot"></span> — PRD IN &nbsp;·&nbsp; REPO OUT &nbsp;·&nbsp; NO SIGN-UP &nbsp;·&nbsp; NO API KEY</div>
+<h1>Got a PRD?<br><span class="outline">Repo built</span><span style="color:#f4f1ea">.</span></h1>
+<p class="sub">Don't push it. Tell the bot what's the project and see <b>verified output</b>: README, code, tests and workflows, with <b>upfront output and live status</b>. Built nearby, often in seconds. Build in two taps.</p>
+<div class="live">● BOT ONLINE — READY TO BUILD</div>
+<div class="glass" id="build">
+<h3>✎ &nbsp;WHAT'S THE PROJECT?</h3>
+<p style="font-size:13px;color:#f59e0b;margin:0 0 8px">EXAMPLES ONLY — tap one to load it, or paste your OWN PRD below. You are NOT limited to these 6 apps.</p>
+<div class="pillrow" id="pills">
+<button class="pill" onclick="pick(this,'Notes App')">Notes App</button>
+<button class="pill" onclick="pick(this,'Task App')">Task App</button>
+<button class="pill" onclick="pick(this,'Blog')">Blog</button>
+<button class="pill" onclick="pick(this,'Shop')">Shop</button>
+<button class="pill" onclick="pick(this,'Chat App')">Chat App</button>
+<button class="pill" onclick="pick(this,'Todo API')">Todo API</button>
+</div>
+<div class="grid2">
+<div><label>PROJECT TYPE — AUTO-DETECTED FROM YOUR PRD</label><div style="padding:12px;border:1px solid var(--line2);border-radius:12px">Auto: React / Python / FastAPI / Flask — detected from your PRD text, no selection needed</div></div>
+<div><label>OUTPUT</label><div style="padding:12px;border:1px solid var(--line2);border-radius:12px">Full repo</div></div>
+</div>
+<div style="margin-top:16px"><label>SHOW ONLY</label><div class="pillrow" id="showonly" style="margin-top:8px"><span class="pill on" onclick="this.classList.toggle('on')">● No sign-up</span><span class="pill on" onclick="this.classList.toggle('on')">● No API key</span><span class="pill on" onclick="this.classList.toggle('on')">● Output on site</span><span class="pill on" onclick="this.classList.toggle('on')">● Human review</span></div></div>
+<div id="detail" style="display:none;background:rgba(245,158,11,.12);border:1px solid var(--amber);border-radius:12px;padding:12px;margin-top:16px"></div>
+<!-- PARALLEL LAYOUT: left = PRD input box, right = Build Flow -->
+<div class="buildgrid">
+<div>
+<div id="chat">Bot: Hi! Type 'help' to see what I can do.</div>
+<textarea id="msg" placeholder="make repo: # Notes App
+
+## Features
+- Create note
+- List notes" style="margin-top:12px"></textarea>
+<label style="display:flex;gap:8px;align-items:center;margin-top:12px;font-size:13px;color:#f4f1ea"><input type="checkbox" id="requireApproval" style="width:18px;height:18px"> Require my approval on THIS SITE before showing the live link (optional — off = link appears automatically, no approval needed)</label>
+<button class="bigbtn" onclick="send()">BUILD MY REPO</button>
+</div>
+<div>
+<div style="background:#020617;border:1px solid var(--line2);border-radius:20px;padding:20px;color:#f4f1ea">
+<h3 style="margin-top:0;color:var(--amber)">Build Flow — watch it being built</h3>
+<div style="background:#334155;height:12px;border-radius:6px;overflow:hidden"><div id="bar" style="background:linear-gradient(90deg,var(--amber),var(--amber2));height:12px;width:0%"></div></div>
+<div id="pct" style="color:var(--amber);font-weight:bold;margin-top:8px">0%</div>
+<div id="elapsed" style="color:#aaa;font-size:13px;margin-top:4px">Real elapsed: 0.00s (no pacing — steps advance only when the server sends a real event)</div>
+<div id="steps" style="margin-top:12px;line-height:1.8"></div>
+<div id="final" style="margin-top:12px;font-weight:bold"></div>
+</div>
+<div id="output" style="background:#1a1a1a;border:1px solid var(--line2);border-radius:20px;padding:20px;margin-top:16px;display:none;color:#f4f1ea">
+<h3 style="margin-top:0;color:var(--amber)">Output — built here, on this website</h3>
+<div id="output-body" style="white-space:pre-wrap"></div>
+<div id="output-link" style="margin-top:12px"></div>
+</div>
+</div>
+</div>
+<div class="trust">NO SIGN-UP &nbsp;·&nbsp; NO API KEY &nbsp;·&nbsp; OUTPUT ON THIS WEBSITE &nbsp;·&nbsp; HUMAN REVIEW, NEVER AUTO-MERGE</div>
+</div>
+</div></section>
+
+<section><div class="wrap" style="padding:0"><div class="stats"><div><b>Full</b><span>REPO PER BUILD</span></div><div><b>Live</b><span>FLOW STEPS</span></div><div><b>3</b><span>AGENT TOOLS</span></div><div><b>100%</b><span>OUTPUT ON THIS SITE</span></div></div></div>
+<div class="ticker"><span>README ✦ TESTS ✦ WORKFLOWS ✦ LICENSE ✦ SECURITY ✦ CHANGELOG ✦ PRD IN ✦ REPO OUT ✦ &nbsp; README ✦ TESTS ✦ WORKFLOWS ✦ LICENSE ✦ SECURITY ✦ CHANGELOG ✦ PRD IN ✦ REPO OUT ✦ &nbsp;</span></div></section>
+
+<section class="cream" id="repos"><div class="ghost">Build</div><div class="wrap">
+<div class="eyebrow2">NEAR YOU</div><h2>Repos, ready<br>to build</h2>
+<p style="color:#555;max-width:620px">Every build below is a fixed scaffold: files are listed upfront, tests prove the repo runs. Pick one and it fills the builder above — no reload, no sign-up.</p>
+<p id="countline" style="font-weight:700">6 starter repos · Python · full repo each.</p>
+<div class="cards3" id="repocards">
+<div class="card"><div class="avatar">📝<span class="check">✓</span></div><h3>Notes App</h3><div style="font-size:11px;letter-spacing:.12em;color:#888">PYTHON · LOCALSTORAGE · NO LOGIN</div><div style="margin-top:10px"><span class="tag">Notes</span> <span class="tag">Search</span> <span class="tag mint">Live demo</span></div><p>★ 4.9 · full repo</p><div class="price"><span>Full repo · LIVE</span><span><button class="btn-outline" onclick="pickCard('Notes App')">Details</button> <button class="btn-amber" onclick="buildCard('Notes App')">Build</button></span></div></div>
+<div class="card"><div class="avatar">✅<span class="check">✓</span></div><h3>Task App</h3><div style="font-size:11px;letter-spacing:.12em;color:#888">PYTHON · API · CRUD</div><div style="margin-top:10px"><span class="tag">Tasks</span> <span class="tag">API</span></div><p>★ 4.8 · full repo</p><div class="price"><span>Full repo · READY</span><span><button class="btn-outline" onclick="pickCard('Task App')">Details</button> <button class="btn-amber" onclick="buildCard('Task App')">Build</button></span></div></div>
+<div class="card"><div class="avatar">✍️<span class="check">✓</span></div><h3>Blog</h3><div style="font-size:11px;letter-spacing:.12em;color:#888">PYTHON · POSTS · PAGES</div><div style="margin-top:10px"><span class="tag">Posts</span> <span class="tag">Pages</span></div><p>★ 4.7 · full repo</p><div class="price"><span>Full repo · READY</span><span><button class="btn-outline" onclick="pickCard('Blog')">Details</button> <button class="btn-amber" onclick="buildCard('Blog')">Build</button></span></div></div>
+<div class="card"><div class="avatar">🛒<span class="check">✓</span></div><h3>Shop</h3><div style="font-size:11px;letter-spacing:.12em;color:#888">PYTHON · PRODUCTS · CART</div><div style="margin-top:10px"><span class="tag">Products</span> <span class="tag">Cart</span></div><p>★ 4.6 · full repo</p><div class="price"><span>Full repo · READY</span><span><button class="btn-outline" onclick="pickCard('Shop')">Details</button> <button class="btn-amber" onclick="buildCard('Shop')">Build</button></span></div></div>
+<div class="card"><div class="avatar">💬<span class="check">✓</span></div><h3>Chat App</h3><div style="font-size:11px;letter-spacing:.12em;color:#888">PYTHON · MESSAGES · ROOMS</div><div style="margin-top:10px"><span class="tag">Messages</span> <span class="tag">Rooms</span></div><p>★ 4.8 · full repo</p><div class="price"><span>Full repo · READY</span><span><button class="btn-outline" onclick="pickCard('Chat App')">Details</button> <button class="btn-amber" onclick="buildCard('Chat App')">Build</button></span></div></div>
+<div class="card"><div class="avatar">⚡<span class="check">✓</span></div><h3>Todo API</h3><div style="font-size:11px;letter-spacing:.12em;color:#888">FASTAPI · ENDPOINTS · TESTS</div><div style="margin-top:10px"><span class="tag">API</span> <span class="tag">Tests</span></div><p>★ 4.9 · full repo</p><div class="price"><span>Full repo · READY</span><span><button class="btn-outline" onclick="pickCard('Todo API')">Details</button> <button class="btn-amber" onclick="buildCard('Todo API')">Build</button></span></div></div>
+</div></div></section>
+
+<section class="cream" id="builds" style="padding-top:0"><div class="wrap">
+<div class="eyebrow2">YOUR BUILDS</div><h2>My builds</h2>
+<p style="color:#555">Live status for every build you've made. DEMO MODE: STATUS ADVANCES WITH EACH FLOW STEP.</p>
+<div id="buildstatus" class="dashed"><b>No builds yet</b><br>When you build a repo above, live build tracking shows up here.</div>
+</div></section>
+
+<section class="blacksec" id="why"><div class="wrap">
+<div class="eyebrow2">WHY THIS BOT</div><h2>Repo building,<br>minus the guesswork</h2>
+<p style="color:#aaa;max-width:640px">It scaffolds a repo from your PRD, and wraps it in tests, workflows and governance, so a PRD never turns into a negotiation about what's included.</p>
+<div class="bento">
+<div class="card"><b>01</b><h3>No sign-up</h3><p>Open the site, paste a PRD, build. Nothing is charged, nothing is held.</p></div>
+<div class="card"><b>02</b><h3>Upfront output</h3><p>File list, README and tests are shown before you leave the page: no surprises at the end.</p></div>
+<div class="card"><b>03</b><h3>Live status</h3><p>Every build shows live status, step by step with percentages — so you never think nothing is happening.</p></div>
+<div class="card"><b>04</b><h3>Human review only</h3><p>Generated code is boilerplate stubs for human review via a PR, never auto-merged. Tests must pass first.</p></div>
+</div>
+<div class="banner" style="margin-top:32px"><div class="eyebrow2">FOR BUILDERS</div><h2 style="font-size:36px">Your next project is<br>2 clicks away</h2><p style="color:#aaa">No marketing spend, no setup hustle. You set the PRD, you keep the repo, and the output stays on this site.</p><button class="btn-amber" style="font-size:16px;padding:14px 24px" onclick="document.getElementById('build').scrollIntoView({behavior:'smooth'})">Build my repo →</button><p style="color:#888;font-size:12px;margin-top:14px">FULL REPO PER BUILD · ₹0 TO TRY · HUMAN REVIEW ONLY · GENERATED CODE IS BOILERPLATE STUBS, NOT FINISHED PRODUCTION CODE.</p></div>
+</div></section>
+
+<section class="cream" id="faq"><div class="wrap">
+<div class="eyebrow2">QUESTIONS</div><h2>Before you ask</h2>
+<div class="faq" onclick="toggleFaq(this)"><div><b>HOW FAST DOES A REPO BUILD?</b><p>The flow runs in seconds, step by step with percentages. Watch Build Flow move from 2% to 100%, then the Output panel appears on the same page.</p></div><span class="plus">+</span></div>
+<div class="faq" onclick="toggleFaq(this)"><div><b>DO I NEED AN API KEY OR SIGN-UP?</b><p>No. No sign-up, no API key. Open the site, paste a PRD, build.</p></div><span class="plus">+</span></div>
+<div class="faq" onclick="toggleFaq(this)"><div><b>WHERE IS THE OUTPUT?</b><p>On this website, in the Output panel below Build Flow, plus the Latest Output card. Not just in chat.</p></div><span class="plus">+</span></div>
+<div class="faq" onclick="toggleFaq(this)"><div><b>IS THE GENERATED CODE FINISHED PRODUCTION CODE?</b><p>No. It is deterministic boilerplate stubs for human review via a PR, never auto-merged.</p></div><span class="plus">+</span></div>
+<div class="card" style="margin-top:20px"><b>✅ LIVE — LATEST OUTPUT</b><h3 id="latestTitle">Notes App</h3><p id="latestDesc" style="color:#555">Built from a PRD: lightweight notes, polished UI, rounded cards, localStorage, no login. This is the output, on this website — not just in chat.</p><p id="latestLink"><a href="https://notes-app-prd.vercel.app/" target="_blank" style="font-weight:bold">Open the built app → notes-app-prd.vercel.app</a></p></div>
+</div></section>
+
+<footer><div class="wrap"><div class="footgrid"><div><div class="logo" style="color:#fff"><b>⚡</b><span>AI&nbsp;<em>AGENT</em>&nbsp;BOT</span></div><p>The PRD-to-repo bot. Paste a PRD, watch it build, copy the output — for Python, React and FastAPI projects.</p></div><div><b style="color:#fff">APP</b><a href="#build">Build a repo</a><a href="#builds">My builds</a><a href="#repos">Repos</a><a href="#faq">FAQ</a></div><div><b style="color:#fff">BUILDER</b><a href="https://vikranthreddy.vercel.app">Portfolio</a><a href="https://github.com/HVRGAMING2705">GitHub: HVRGAMING2705</a><a href="https://crevanta-ventures.vercel.app">Crevanta Ventures</a></div><div><b style="color:#fff">STACK</b><span style="display:block;margin:8px 0">Python</span><span style="display:block;margin:8px 0">React</span><span style="display:block;margin:8px 0">FastAPI</span></div></div>
+<div style="border-top:1px solid var(--line2);margin-top:24px;padding:16px 0;display:flex;justify-content:space-between;flex-wrap:wrap"><span>© 2026 AI Agent Bot — Vikranth Reddy. Generated code is boilerplate stubs, not finished production code.</span><span>Modern UI inspired by MechNow + portfolio</span></div></div>
+<div class="watermark">AI AGENT BOT</div></footer>
+<button id="topbtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>
+const FLOW=[[2,'Reading PRD — title, description, features'],[5,'Extracting features list'],[8,'Mapping modules and functions'],[11,'Mapping API endpoints'],[15,'Scaffolding — creating project folder'],[19,'Scaffolding — creating src/ package'],[23,'Scaffolding — creating tests/ folder'],[27,'Scaffolding — creating .github/workflows/ folder'],[32,'Writing README.md — from PRD description + features'],[37,'Writing pyproject.toml + requirements.txt'],[42,'Writing code — module 1, function stubs + docstrings'],[47,'Writing code — module 2, function stubs + docstrings'],[52,'Writing tests — test stubs for every function'],[57,'Writing workflows — ci.yml (pytest)'],[62,'Writing LICENSE'],[67,'Writing CONTRIBUTING.md'],[72,'Writing SECURITY.md'],[77,'Writing CHANGELOG.md — "Initial repo generated from PRD"'],[81,'Writing .gitignore — Python + secret patterns'],[85,'Running tests — pytest on generated code'],[89,'Checking health — README, LICENSE, tests, workflows'],[93,'Packaging — files ready'],[97,'Packaging — output ready to copy / deploy'],[100,'Done — output ready below, on this website']];
+const FEATURES={'Notes App':['Create note','List notes','Search notes'],'Task App':['Create task','List tasks','Complete task'],'Blog':['Create post','List posts','View post'],'Shop':['List products','Add to cart','Checkout'],'Chat App':['Send message','List messages','Join room'],'Todo API':['Create todo','List todos','Complete todo']};
+function prdFor(name){return 'make repo: # '+name+'\n\n## Features\n'+FEATURES[name].map(f=>'- '+f).join('\n');}
+function setRole(el){document.querySelectorAll('#roles span').forEach(s=>s.classList.remove('on'));el.classList.add('on');}
+function loginNote(){const n=document.getElementById('loginNote');n.style.display=n.style.display==='none'?'block':'none';}
+function toggleTheme(){document.body.classList.toggle('light');document.getElementById('themeBtn').textContent=document.body.classList.contains('light')?'☀️':'🌙';}
+function toggleFaq(el){el.classList.toggle('open');el.querySelector('.plus').textContent=el.classList.contains('open')?'×':'+';}
+function changeType(v){document.getElementById('countline').textContent="6 starter examples (not the limit) · stack auto-detected from your PRD · paste any PRD above to build any app.";}
+function pick(el,name){document.querySelectorAll('#pills .pill').forEach(p=>p.classList.remove('on'));el.classList.add('on');document.getElementById('msg').value=prdFor(name);document.getElementById('countline').textContent="6 starter repos · selected: "+name+".";}
+function showDetail(name){const d=document.getElementById('detail');d.style.display='block';d.innerHTML='<b>'+name+'</b> — '+FEATURES[name].join(' · ')+' · full repo: README, code, tests, workflows, LICENSE, CONTRIBUTING, SECURITY, CHANGELOG, .gitignore. <button class="btn-amber" style="margin-left:8px" onclick="buildCard(\''+name+'\')">Build this repo</button>';}
+function pickCard(name){const el=[...document.querySelectorAll('#pills .pill')].find(p=>p.textContent.trim()===name);if(el)pick(el,name);else{document.getElementById('msg').value=prdFor(name);}showDetail(name);document.getElementById('build').scrollIntoView({behavior:'smooth'});}
+async function buildCard(name){pickCard(name);await send();}
+async function send(){
+const buildStart=performance.now();
+const m=document.getElementById('msg').value;const c=document.getElementById('chat');
+c.textContent+='\n\nYou: '+m;
+const steps=document.getElementById('steps'),bar=document.getElementById('bar'),pct=document.getElementById('pct'),fin=document.getElementById('final'),bs=document.getElementById('buildstatus'),elapsedEl=document.getElementById('elapsed');
+function esc(t){return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function elapsedS(){return ((performance.now()-buildStart)/1000).toFixed(2);}
+// STABLE WAITING STATE: no % bar, no per-event re-render. The only thing
+// that moves while waiting is a real elapsed clock (real waiting time).
+steps.innerHTML='Working… waiting for server — file generation is genuinely fast, so this wait is usually under a second.';
+pct.textContent='Working… waiting for server';
+fin.textContent='';
+if(bs)bs.innerHTML='<b>Working… waiting for server</b>';
+const clock=setInterval(()=>{if(elapsedEl)elapsedEl.textContent='Real elapsed (waiting): '+elapsedS()+'s — no progress %, no pacing, steps appear once when the server finishes.';},100);
+const low=m.trim().toLowerCase();
+const isRepo=!(low==='help'||low==='hi'||low==='hello'||low.startsWith('health:')||low.startsWith('list files:'));
+if(!isRepo){clearInterval(clock);
+try{const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:m})});const d=await r.json();
+c.textContent+='\nBot: '+d.reply;c.scrollTop=c.scrollHeight;fin.textContent='✅ Done — chat reply only, no build run.';steps.innerHTML='Chat reply only — no build run. Type a PRD and press BUILD MY REPO to build.';pct.textContent='Chat only';if(bs)bs.innerHTML='<b>Chat reply only</b><br>'+esc(d.reply.split('\n')[0]);}catch(e){fin.textContent='❌ Could not reach the server. Check your connection and try again.';steps.innerHTML='❌ Server request failed — no reply received.';pct.textContent='Error';}return;}
+// REAL STREAM, COLLECTED SILENTLY: Vercel may buffer the NDJSON response
+// and deliver all events in one burst, so rendering per event made the bar
+// jump 0→100 in one frame. Events are now collected without re-rendering,
+// and the step list is rendered ONCE, after the stream finishes, with each
+// step's real server timestamp (t_ms from api/chat.py). No timer, no delay.
+const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:m,stream:true})});
+const reader=r.body.getReader();const dec=new TextDecoder();let buf='',finalReply='';
+const events=[];
+while(true){const {done,value}=await reader.read();if(done)break;buf+=dec.decode(value,{stream:true});
+let idx;while((idx=buf.indexOf('\n'))>=0){const line=buf.slice(0,idx);buf=buf.slice(idx+1);if(!line.trim())continue;
+try{const ev=JSON.parse(line);events.push(ev);if(ev.done&&ev.reply)finalReply=ev.reply;}catch(e){}}}
+if(!finalReply){try{const rr=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:m})});const dd=await rr.json();finalReply=dd.reply;}catch(e){clearInterval(clock);fin.textContent='❌ Could not reach the server. Check your connection and try again.';steps.innerHTML='❌ Server request failed — no reply received.';pct.textContent='Error';return;}}
+clearInterval(clock);
+c.textContent+='\nBot: '+finalReply;c.scrollTop=c.scrollHeight;
+const totalElapsed=elapsedS();
+if(elapsedEl)elapsedEl.textContent='Real elapsed: '+totalElapsed+'s — file generation only (no pacing, no fake %)';
+// RENDER STEP LIST ONCE, in order, with real server timestamps.
+const serverTotal=events.length&&typeof events[events.length-1].t_ms==='number'?(events[events.length-1].t_ms/1000).toFixed(2):totalElapsed;
+steps.innerHTML=events.map((ev,i)=>'✅ Step '+(i+1)+' — '+esc(ev.label)+' — server +'+(typeof ev.t_ms==='number'?(ev.t_ms/1000).toFixed(2):'?')+'s').join('<br>');
+pct.textContent='Done — see steps below';
+const proj=(m.match(/#\s*(.+)/)||[])[1]||'Repo';document.getElementById('latestTitle').textContent=proj.trim();
+const fc=(finalReply.match(/— (\d+) files/)||[])[1]||'?';document.getElementById('latestDesc').textContent='Built just now from your PRD — '+fc+' files, on this website. Includes a working app/index.html plus Python code, tests, workflows, LICENSE, CONTRIBUTING, SECURITY, CHANGELOG.';
+const DEPLOYED={'notes app':'https://notes-app-prd.vercel.app/','moodly - mood tracker app':'https://moodly-app-hvrgaming2705s-projects.vercel.app/','focusflow - pomodoro study timer':'https://focusflow-app-hvrgaming2705s-projects.vercel.app/'};
+const projKey=proj.trim().toLowerCase().replace(/^(prd|project)\s*:\s*/,'').replace(/[\u2013\u2014]/g,'-').replace(/\s+/g,' ').trim();
+const liveLink=(window._BUILDS&&window._BUILDS[projKey])||DEPLOYED[projKey]||null;
+const needApproval=document.getElementById('requireApproval')&&document.getElementById('requireApproval').checked;
+window._liveLink=liveLink;
+// FINAL RENDER — ONE assignment per element. The approve flow does not
+// rewrite innerHTML: the link is pre-rendered hidden and only revealed.
+const linkHtml=liveLink?'<a class="hiddenLiveLink" href="'+liveLink+'" target="_blank" style="font-weight:bold;color:#f59e0b'+(needApproval?';display:none':'')+'">🚀 Open the built app → '+liveLink.replace('https://','')+'</a>':'';
+const approveHtml=(liveLink&&needApproval)?'<button id="approveBtn" class="btn-amber" onclick="showApprovedLink()">Approve & Show Link (on this site)</button><span class="hiddenNotice"> Link hidden until you approve on this site.</span>':'';
+fin.innerHTML='✅ Built! Output is below, on this website — not just in chat.<br>Files generated in '+serverTotal+'s (real server time).<br><span>File generation is genuinely fast — the long work (GitHub repo + Vercel site) is tracked live in chat/WhatsApp, not on this bar.</span><br><span>GitHub repo + Vercel website: done by MR X next — see chat/WhatsApp for live step updates (repo created → files pushed → site deployed → both links). This site cannot create GitHub repos or deploy by itself (stateless, no login).</span><br>'+linkHtml+approveHtml;
+if(bs)bs.innerHTML='<b>✅ Built — Done</b><br>'+esc(finalReply.split('\n')[0])+'<br>Files generated in '+serverTotal+'s (real server time)';
+const out=document.getElementById('output'),ob=document.getElementById('output-body'),ol=document.getElementById('output-link');out.style.display='block';ob.textContent=finalReply;
+document.getElementById('latestLink').innerHTML=(liveLink)?(needApproval?'<span class="hiddenNotice">Link hidden until you approve on this site.</span>'+linkHtml:'<a href="'+liveLink+'" target="_blank" style="font-weight:bold">Open the built app → '+liveLink.replace('https://','')+'</a>'):'<span>No live link yet for this build — copy the files below to deploy it.</span>';
+ol.innerHTML=((liveLink)?(needApproval?'<p class="hiddenNotice">Link hidden until you approve on this site — click Approve & Show Link above.</p>'+linkHtml:'<p>'+linkHtml.replace('🚀 Open','🚀 Final Vercel link — Open')+'</p>'):'<p>No live link yet for this build — copy the files below to deploy it.</p>')+'<br><button class="btn-amber" onclick="copyOutput()">Copy output</button> <button class="btn-outline" style="border-color:#f59e0b;color:#f59e0b" onclick="downloadOutput()">Download output</button> <button class="btn-amber" onclick="copyHandoff()">Send this build to MR X</button><span id="handoffNote" style="display:block;margin-top:8px;color:#aaa;font-size:13px">Copies a handoff message — paste it in your WhatsApp chat with MR X. That is how the site reaches him: he then creates the repo, pushes the files, deploys on Vercel, and sends you both links.</span>';
+window.showApprovedLink=function(){document.querySelectorAll('.hiddenLiveLink').forEach(el=>{el.style.display='';});document.querySelectorAll('.hiddenNotice').forEach(el=>{el.style.display='none';});const ab=document.getElementById('approveBtn');if(ab)ab.style.display='none';};
+}
+function copyOutput(){navigator.clipboard.writeText(document.getElementById('output-body').textContent||'');alert('Output copied.');}
+function copyHandoff(){const m=document.getElementById('msg').value;const out=document.getElementById('output-body').textContent||'';const title=document.getElementById('latestTitle').textContent||'Repo';const text='Hey MR X — I just built '+title+' on the AI Agent Bot site. Please create the GitHub repo, push the files, deploy on Vercel, and send me both links.\n\nPRD I used:\n'+m+'\n\nBuild output:\n'+out;navigator.clipboard.writeText(text);const n=document.getElementById('handoffNote');if(n)n.textContent='✅ Handoff copied — paste it in your WhatsApp chat with MR X.';}
+function downloadOutput(){const b=new Blob([document.getElementById('output-body').textContent||''],{type:'text/plain'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='generated-repo-output.txt';a.click();}
+window.addEventListener('scroll',()=>{const h=document.documentElement;const p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;document.getElementById('progress').style.width=p+'%';document.getElementById('topbtn').style.display=h.scrollTop>600?'block':'none';});
+</script>
+<script>
+(function(){function key(n){return n.trim().toLowerCase().replace(/^(prd|project)\s*:\s*/,'').replace(/[\u2013\u2014]/g,'-').replace(/\s+/g,' ').trim();}
+fetch('builds.json').then(r=>r.json()).then(d=>{const map={};(d.builds||[]).forEach(b=>{map[key(b.name)]=b.link;});window._BUILDS=map;
+const bs=document.getElementById('buildstatus');if(bs&&d.builds&&d.builds.length){bs.innerHTML='<b>Builds on this site</b><br>'+d.builds.map(b=>'<a href="'+b.link+'" target="_blank">'+b.name+'</a>').join('<br>');}
+const last=d.builds&&d.builds[d.builds.length-1];if(last){const t=document.getElementById('latestTitle');if(t)t.textContent=last.name;const de=document.getElementById('latestDesc');if(de&&last.desc)de.textContent=last.desc;const l=document.getElementById('latestLink');if(l)l.innerHTML='<a href="'+last.link+'" target="_blank" style="font-weight:bold">Open the built app → '+last.link.replace('https://','')+'</a>';}}).catch(()=>{});})();
+</script>
+</body></html>

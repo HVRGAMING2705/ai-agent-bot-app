@@ -1,0 +1,5 @@
+{"builds":[
+{"name":"Notes App","link":"https://notes-app-prd.vercel.app/","desc":"Built from a PRD: lightweight notes, polished UI, rounded cards, localStorage, no login. This is the output, on this website — not just in chat."},
+{"name":"Moodly - Mood Tracker App","link":"https://moodly-app-hvrgaming2705s-projects.vercel.app/","desc":"Mood tracker app built from a PRD on this site."},
+{"name":"Focusflow - Pomodoro Study Timer","link":"https://focusflow-app-hvrgaming2705s-projects.vercel.app/","desc":"Pomodoro study timer built from a PRD on this site."}
+]}
