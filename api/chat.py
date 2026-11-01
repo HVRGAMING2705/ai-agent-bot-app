@@ -31,17 +31,52 @@ def make_repo_text(prd_text):
             return p.name
     names = "\n".join(f"- {_rel(f)}" for f in sorted(files, key=lambda x: _rel(x)))
     stack = ", ".join(prd.get("tech_stack", []))
+    # Site repo step: Vercel skipped. Auto-create the GitHub repo.
+    repo_url, github_line = _github_step(prd, out, files)
     try:
         from core.blobstore import build_record, save_build
         saved = save_build(build_record(
             prd.get('project_name', 'Unnamed'), len(files),
-            prd.get("tech_stack", []), prd.get("features", [])))
+            prd.get("tech_stack", []), prd.get("features", []), link=repo_url))
     except Exception:
         saved = False
     return (f"Repo generated: {prd.get('project_name', 'Unnamed')} — {len(files)} files.\n"
             f"Detected stack (auto, from your PRD): {stack}.\n"
+            f"{github_line}\n"
             f"Saved on this site: {'yes — listed in My Builds, even after reload.' if saved else 'no — Blob store unavailable for this build, output below is still complete.'}\n{names}\n\n"
             f"--- README.md ---\n{readme}")
+
+
+def _github_step(prd, out, files):
+    """Try the site's auto GitHub-repo step. Returns (url_or_None, line)."""
+    try:
+        from core.github_repo import create_repo_with_files
+        payload = {}
+        for f in files:
+            p = Path(f)
+            try:
+                rel = str(p.relative_to(out))
+            except Exception:
+                rel = p.name
+            payload[rel] = p.read_bytes()
+        desc = ""
+        try:
+            desc = " ".join(str(prd.get("description", "")).split())[:350]
+        except Exception:
+            desc = ""
+        url, err = create_repo_with_files(
+            prd.get('project_name', 'Unnamed'), desc, payload)
+        if url:
+            return url, f"GitHub repo: {url} — created automatically from this PRD. Vercel skipped."
+        if err == "token_missing":
+            return None, ("GitHub repo: NOT created — GITHUB_TOKEN is not set on this site. "
+                          "Owner step: Vercel dashboard -> ai-agent-bot-app -> Settings -> "
+                          "Environment Variables -> add GITHUB_TOKEN (fine-grained PAT, public repos, "
+                          "contents write), redeploy, then rebuild this PRD. Files above are complete. "
+                          "Vercel skipped.")
+        return None, f"GitHub repo: NOT created — {err}. Files above are complete. Vercel skipped."
+    except Exception as e:
+        return None, f"GitHub repo: NOT created — {e}. Files above are complete. Vercel skipped."
 
 
 
@@ -84,16 +119,20 @@ def build_stream(prd_text):
         pct = 19 + int((i + 1) * (93 - 19) / max(n, 1))
         yield ev(pct, f"Writing {name}")
     readme = (out / "README.md").read_text() if (out / "README.md").exists() else ""
+    yield ev(95, "Creating GitHub repo — Vercel skipped, repo only")
+    repo_url, github_line = _github_step(prd, out, files)
+    yield ev(97, "GitHub repo: " + (repo_url or "not created — see output below"))
     yield ev(99, "Saving build to this site")
     try:
         from core.blobstore import build_record, save_build
         saved = save_build(build_record(
             prd.get('project_name', 'Unnamed'), len(files),
-            prd.get("tech_stack", []), prd.get("features", [])))
+            prd.get("tech_stack", []), prd.get("features", []), link=repo_url))
     except Exception:
         saved = False
     reply = (f"Repo generated: {prd.get('project_name', 'Unnamed')} — {len(files)} files.\n"
              f"Detected stack (auto, from your PRD): {stack}.\n"
+             f"{github_line}\n"
              f"Saved on this site: {'yes — listed in My Builds, even after reload.' if saved else 'no — Blob store unavailable for this build, output below is still complete.'}\n"
              + "\n".join(f"- {nm}" for nm in names) + "\n\n--- README.md ---\n" + readme)
     yield ev(100, "Done — output ready below, on this website", done=True, reply=reply)
