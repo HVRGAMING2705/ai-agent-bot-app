@@ -1,1 +1,1 @@
-{"rewrites": [{"source": "/api/chat", "destination": "/api/chat.py"}]}
+{"rewrites":[{"destination":"/api/chat.py","source":"/api/chat"},{"destination":"/api/builds.py","source":"/api/builds"}]}
