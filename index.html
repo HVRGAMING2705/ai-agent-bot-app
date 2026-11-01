@@ -214,7 +214,7 @@ steps.innerHTML=events.map((ev,i)=>'✅ Step '+(i+1)+' — '+esc(ev.label)+' —
 pct.textContent='Done — see steps below';
 const proj=(m.match(/#\s*(.+)/)||[])[1]||'Repo';document.getElementById('latestTitle').textContent=proj.trim();
 const fc=(finalReply.match(/— (\d+) files/)||[])[1]||'?';document.getElementById('latestDesc').textContent='Built just now from your PRD — '+fc+' files, on this website. Includes a working app/index.html plus Python code, tests, workflows, LICENSE, CONTRIBUTING, SECURITY, CHANGELOG.';
-const DEPLOYED={'notes app':'https://notes-app-prd.vercel.app/','moodly - mood tracker app':'https://moodly-app-hvrgaming2705s-projects.vercel.app/','focusflow - pomodoro study timer':'https://focusflow-app-hvrgaming2705s-projects.vercel.app/'};
+const DEPLOYED={'notes app':'https://notes-app-prd.vercel.app/','moodly - mood tracker app':'https://moodly-app-hvrgaming2705s-projects.vercel.app/','focusflow - pomodoro study timer':'https://focusflow-app-hvrgaming2705s-projects.vercel.app/','recipebox - recipe manager app':'https://github.com/HVRGAMING2705/recipebox','studydeck - flashcards quiz app':'https://github.com/HVRGAMING2705/studydeck','plantcare - plant watering reminder app':'https://github.com/HVRGAMING2705/plantcare','trippack - travel packing checklist app':'https://github.com/HVRGAMING2705/trippack'};
 const projKey=proj.trim().toLowerCase().replace(/^(prd|project)\s*:\s*/,'').replace(/[\u2013\u2014]/g,'-').replace(/\s+/g,' ').trim();
 const repoMatch=finalReply.match(/GitHub repo:\s*(https:\/\/github\.com\/[^\s]+)/);
 const repoLink=repoMatch?repoMatch[1]:null;
