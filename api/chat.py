@@ -1,6 +1,8 @@
 """Vercel serverless function: POST /api/chat {message} -> {reply}
-Stateless: make-repo generates to /tmp and returns the file list + README text,
-it does not persist a folder on the server. Copy/download the output to keep it.
+Stateful: every repo build is saved to the Vercel Blob builds store
+(core/blobstore.py) and listed by GET /api/builds, so builds persist
+across reloads and deploys. Generated files themselves are still
+returned in the reply (copy/download if you want a local copy).
 """
 import json
 import sys
@@ -29,9 +31,16 @@ def make_repo_text(prd_text):
             return p.name
     names = "\n".join(f"- {_rel(f)}" for f in sorted(files, key=lambda x: _rel(x)))
     stack = ", ".join(prd.get("tech_stack", []))
+    try:
+        from core.blobstore import build_record, save_build
+        saved = save_build(build_record(
+            prd.get('project_name', 'Unnamed'), len(files),
+            prd.get("tech_stack", []), prd.get("features", [])))
+    except Exception:
+        saved = False
     return (f"Repo generated: {prd.get('project_name', 'Unnamed')} — {len(files)} files.\n"
             f"Detected stack (auto, from your PRD): {stack}.\n"
-            f"On Vercel this is stateless, so copy the output below to keep it:\n{names}\n\n"
+            f"Saved on this site: {'yes — listed in My Builds, even after reload.' if saved else 'no — Blob store unavailable for this build, output below is still complete.'}\n{names}\n\n"
             f"--- README.md ---\n{readme}")
 
 
@@ -75,9 +84,17 @@ def build_stream(prd_text):
         pct = 19 + int((i + 1) * (93 - 19) / max(n, 1))
         yield ev(pct, f"Writing {name}")
     readme = (out / "README.md").read_text() if (out / "README.md").exists() else ""
+    yield ev(99, "Saving build to this site")
+    try:
+        from core.blobstore import build_record, save_build
+        saved = save_build(build_record(
+            prd.get('project_name', 'Unnamed'), len(files),
+            prd.get("tech_stack", []), prd.get("features", [])))
+    except Exception:
+        saved = False
     reply = (f"Repo generated: {prd.get('project_name', 'Unnamed')} — {len(files)} files.\n"
              f"Detected stack (auto, from your PRD): {stack}.\n"
-             f"On Vercel this is stateless, so copy the output below to keep it:\n"
+             f"Saved on this site: {'yes — listed in My Builds, even after reload.' if saved else 'no — Blob store unavailable for this build, output below is still complete.'}\n"
              + "\n".join(f"- {nm}" for nm in names) + "\n\n--- README.md ---\n" + readme)
     yield ev(100, "Done — output ready below, on this website", done=True, reply=reply)
 
